@@ -91,9 +91,7 @@ Fairness research on clinical models shows that prediction errors can differ by 
 
 Which fairness measure fits depends on the decision. Rajkomar et al.\ link the measure to the harm. If missing a patient is the harm, equal sensitivity across groups matters; if false alarms lead to harmful interventions, equal specificity matters~\cite{rajkomar2018ensuring}. Paulus and Kent call a decision polar when one side of the prediction is always better for the patient, for example when predictions allocate scarce resources. In their view, fairness concerns apply mainly to such decisions~\cite{paulus2020predictably}. An early bed request can be read as a polar decision. Paulus and Kent also warn that a feature such as previous hospitalisation becomes biased if admission thresholds differed between groups in the past. This warning applies to this thesis, because it takes insurance from earlier hospital stays. Lett et al.\ also use the number of previous admissions as an input~\cite{lett2025intersectional}.
 
-Among the studies reviewed here, only one measured fairness along a running case, and it comes from education. Rzepka et al.\ predicted whether learners would leave a session on an online spelling platform and repeated the prediction after every sentence~\cite{rzepka2022fairness}. As the session went on, accuracy rose and fairness fell. Later predictions only cover sessions that are still running, a point the paper does not discuss.
-
-Fairness of ED admission prediction has thus been studied for race and sex, but only at triage. Insurance has been studied in other clinical models and, like language, as a difference in how patients are treated, but not for admission prediction. Fairness along the moments of a case has been measured only outside healthcare. The next subsection turns to fairness research in predictive process monitoring, where the second and third lines of research meet.
+Fairness of ED admission prediction has thus been studied for race and sex, but only at triage. Insurance has been studied in other clinical models and, like language, as a difference in how patients are treated, but not for admission prediction. None of these studies checks fairness at more than one moment of a visit or case. The next subsection turns to fairness research in predictive process monitoring, where the second and third lines of research meet.
 % TODO: replace "The next subsection" by Section~\ref{...} once 2.3 exists.
 
 \begin{table}[htbp]
@@ -107,7 +105,7 @@ Fairness of ED admission prediction has thus been studied for race and sex, but 
     \multicolumn{5}{@{}l}{\textit{Admission prediction in the ED}} \\
     Xie et al.~\cite{xie2022benchmarking} & Hospitalisation & MIMIC-IV-ED (441,437 visits) & Triage & No \\
     Lett et al.~\cite{lett2025intersectional} & Admission & MIMIC-IV-ED; one children's ED & Triage & Race and ethnicity, gender \\
-    Liu et al.~\cite{liu2024faim} & Admission & MIMIC-IV-ED; one ED in Singapore & One (triage information) & Race, sex \\
+    Liu et al.~\cite{liu2024faim} & Admission & MIMIC-IV-ED; one ED in Singapore & Triage (one prediction from triage data) & Race, sex \\
     Licoppe et al.~\cite{licoppe2026assessing} & Admission & MIMIC-IV-ED & Triage & Race \\
     King et al.~\cite{king2022machine} & Admission, summed up for bed planning & One ED in London & Twelve moments, from arrival to 12 hours & No \\
     \midrule
@@ -115,12 +113,11 @@ Fairness of ED admission prediction has thus been studied for race and sex, but 
     Teinemaa et al.~\cite{teinemaa2019outcome} & Case outcome & Nine real-life event logs (24 tasks) & Every prefix length & No \\
     Teinemaa et al.~\cite{teinemaa2018temporal} & Case outcome, stability of predictions & Six real-life event logs (12 tasks) & Every prefix length & No \\
     \midrule
-    \multicolumn{5}{@{}l}{\textit{Fairness of clinical and other prediction models}} \\
+    \multicolumn{5}{@{}l}{\textit{Fairness of clinical prediction models}} \\
     Röösli et al.~\cite{roosli2022peeking} & In-hospital mortality & MIMIC-III (ICU); Stanford hospital data & First 48 hours of the ICU stay & Gender, ethnicity, insurance \\
     Wang et al.~\cite{wang2025evaluating} & Long wait for an examination room & One US ED (triage level 3) & Around triage & Sex, race and ethnicity, insurance \\
-    Pfohl et al.~\cite{pfohl2021empirical} & Mortality, long stay, readmission & Stanford hospital data, claims, MIMIC-III & One & Race and ethnicity, sex, age \\
-    Sánchez-Marqués et al.~\cite{sanchezmarques2026addressing} & Glioma grade & TCGA (839 patients) & One (diagnosis) & Race, gender \\
-    Rzepka et al.~\cite{rzepka2022fairness} & Leaving a learning session & Online spelling platform & After every sentence & Gender, first language, parental education, books at home \\
+    Pfohl et al.~\cite{pfohl2021empirical} & Mortality, long stay, readmission & Stanford hospital data, claims, MIMIC-III & Start of the hospital stay (MIMIC-III: 24 hours after admission) & Race and ethnicity, sex, age \\
+    Sánchez-Marqués et al.~\cite{sanchezmarques2026addressing} & Glioma grade & TCGA (839 patients) & Not time-based (one diagnosis per patient) & Race, gender \\
     \bottomrule
   \end{tabularx}
 \end{table}
