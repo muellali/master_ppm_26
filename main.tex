@@ -42,19 +42,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%_TITLE_PAGE_%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-% Beispielhafte Nutzung der Vorlage für die Titelseite (bitte anpassen):
-\input{Institutsvorlage}
+\input{Institutsvorlage} % HU template: title page of the final thesis and declaration (appendix)
 
-\titel{This is a Long Title which Spans Over Several Lines and Shall Always Look the Same} % Titel der Arbeit
-\typ{Masterarbeit} % Typ der Arbeit:  Diplomarbeit, Masterarbeit, Bachelorarbeit
-\grad{Master of Science (M. Sc.)} % erreichter Akademischer Grad
-    % z.B.: Master of Science (M. Sc.), Master of Education (M. Ed.), Bachelor of Science (B. Sc.), Bachelor of Arts (B. A.)
-\autor{Maxime Mustermann} % Autor der Arbeit, mit Vor- und Nachname
-\gebdatum{1.1.1970} % Geburtsdatum des Autors
-\gebort{Bielefeld} % Geburtsort des Autors
-\gutachter{Prof. Dr. Dr. hc. mult. Kerstin von Kienfeld}{Prof. Dr. Bernd Blume} % Erst- und Zweitgutachter der Arbeit
-\mitverteidigung % entfernen, falls keine Verteidigung erfolgt
-\makeTitel
+% Title page of the PROPOSAL (English labels, see titlepage_proposal.tex).
+% Fields left out or empty are printed as dotted lines.
+\input{titlepage_proposal}
+\ptitle{Working Title (to be decided)} % TODO: title not chosen yet
+% \psubtitle{}    % optional: subtitle, printed on its own line below the title
+\ptype{Master's Thesis Proposal}
+\pauthor{Alina Müller}
+% \pstudentid{}   % TODO: student ID (Matrikelnummer)
+% \pemail{}       % TODO: email address
+\psupervisor{Kate Revoredo} % TODO: add academic title if wanted
+\pdate{19 October 2026}
+\makeProposalTitle
+
+% Title page of the FINAL THESIS (HU template, German labels). Not used for the proposal.
+% \titel{...}                       % Titel der Arbeit
+% \typ{Masterarbeit}                % Typ der Arbeit
+% \grad{Master of Science (M. Sc.)} % erreichter Akademischer Grad
+% \autor{Alina Müller}              % Autor der Arbeit, mit Vor- und Nachname
+% \gebdatum{...}                    % Geburtsdatum des Autors
+% \gebort{...}                      % Geburtsort des Autors
+% \gutachter{...}{...}              % Erst- und Zweitgutachter der Arbeit
+% \mitverteidigung                  % entfernen, falls keine Verteidigung erfolgt
+% \makeTitel
 
 \begin{abstract}
 	\textbf{Abstract.} Write your abstract here.

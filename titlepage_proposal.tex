@@ -1,0 +1,66 @@
+% Title page for the research proposal (English labels).
+% Based on \makeTitel in Institutsvorlage.tex (HU Institut für Informatik):
+% same header and layout, but with the fields needed for a proposal.
+% Needs Institutsvorlage.tex to be loaded first (uses \TitelPunktLinie).
+% Fields that are not set are printed as dotted lines.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand*{\@pTitle}{Title of the Thesis}
+\newcommand{\ptitle}[1]{\renewcommand*{\@pTitle}{#1}}         % title
+\newcommand*{\@pSubtitle}{}
+\newcommand{\psubtitle}[1]{\renewcommand*{\@pSubtitle}{#1}}   % subtitle (optional)
+\newcommand*{\@pType}{Master's Thesis Proposal}
+\newcommand{\ptype}[1]{\renewcommand*{\@pType}{#1}}           % type of document
+\newcommand*{\@pAuthor}{\TitelPunktLinie{5cm}}
+\newcommand{\pauthor}[1]{\renewcommand*{\@pAuthor}{#1}}       % author
+\newcommand*{\@pStudentID}{\TitelPunktLinie{3cm}}
+\newcommand{\pstudentid}[1]{\renewcommand*{\@pStudentID}{#1}} % student ID (Matrikelnummer)
+\newcommand*{\@pEmail}{\TitelPunktLinie{6cm}}
+\newcommand{\pemail}[1]{\renewcommand*{\@pEmail}{#1}}         % email
+\newcommand*{\@pSupervisor}{\TitelPunktLinie{5cm}}
+\newcommand{\psupervisor}[1]{\renewcommand*{\@pSupervisor}{#1}} % supervisor
+\newcommand*{\@pDate}{\TitelPunktLinie{3cm}}
+\newcommand{\pdate}[1]{\renewcommand*{\@pDate}{#1}}           % submission date
+%%
+\newcommand{\makeProposalTitle}{%
+	\begin{titlepage}
+		\setlength{\parindent}{0pt}
+		\setlength{\parskip}{\baselineskip}
+		\thispagestyle{empty}
+		%
+		\begin{minipage}[c][3cm][c]{12cm}
+			\textsc{%
+				\hspace{-0.4mm}\textls*[68]{\Large Humboldt-Universität zu Berlin}\\
+				\normalsize \textls*[45]{
+					Mathematisch-Naturwissenschaftliche Fakultät\\
+					Institut für Informatik
+				}
+			}
+		\end{minipage}
+		\vfill
+		%
+		\begin{center}
+		\begin{doublespace}
+			{\LARGE \textbf{\@pTitle}}\\
+			\ifx\@pSubtitle\@empty\else
+				{\Large \@pSubtitle}\\
+			\fi
+			\vspace{\baselineskip}
+			{\Large \@pType}
+		\end{doublespace}
+		\end{center}
+		%
+		\vfill
+		{\large
+			\begin{tabularx}{\textwidth}{@{}l@{\quad}>{\raggedright\arraybackslash}X@{}}
+				Submitted by: & \@pAuthor \\
+				Student ID:   & \@pStudentID \\
+				Email:        & \@pEmail
+				\vspace{0.5\baselineskip}\\
+				Supervisor:   & \@pSupervisor
+				\vspace{0.5\baselineskip}\\
+				Submitted on: & \@pDate
+			\end{tabularx}}
+	\end{titlepage}
+}
+\makeatother
