@@ -1,7 +1,6 @@
 \section{Related Work}\label{section::related_work}
 
-This section reviews related work in four parts: the business problem in the emergency department (Section~\ref{subsection::business_problem}), the prediction of admissions and process outcomes (Section~\ref{subsection::prediction_work}), fairness in predictive process monitoring (Section~\ref{subsection::fairness_ppm}), and the resulting research gap.
-% TODO: add \ref{} for the research gap once 2.4 exists.
+This section reviews related work in four parts: the business problem in the emergency department (Section~\ref{subsection::business_problem}), the prediction of admissions and process outcomes (Section~\ref{subsection::prediction_work}), fairness in predictive process monitoring (Section~\ref{subsection::fairness_ppm}), and the resulting research gap (Section~\ref{subsection::gap}).
 
 \subsection{The Business Problem}\label{subsection::business_problem}
 
@@ -142,8 +141,7 @@ Among the studies reviewed here, only one examines fairness in a process with re
 
 Outside process mining, one study measured fairness along a running case, in education. Rzepka et al.\ predicted whether learners would leave a session on an online spelling platform and repeated the prediction after every sentence~\cite{rzepka2022fairness}. As the session went on, accuracy rose and fairness fell. Later predictions, however, can only cover sessions that were still running, a point the paper does not discuss.
 
-So far, fairness methods for process predictions have been tested on simulated logs, on attributes that the authors added themselves, or on attributes of staff and organisations. Among the studies reviewed here, the only one with real patient attributes from an emergency department describes the process but makes no predictions. The only one that followed fairness along running cases comes from education. The next subsection sets out the resulting gap and how this thesis addresses it.
-% TODO: replace "The next subsection" by Section~\ref{...} once 2.4 exists.
+So far, fairness methods for process predictions have been tested on simulated logs, on attributes that the authors added themselves, or on attributes of staff and organisations. Among the studies reviewed here, the only one with real patient attributes from an emergency department describes the process but makes no predictions. The only one that followed fairness along running cases comes from education. Section~\ref{subsection::gap} sets out the resulting gap and how this thesis addresses it.
 
 \afterpage{%
 \begin{landscape}
@@ -173,3 +171,11 @@ So far, fairness methods for process predictions have been tested on simulated l
 \end{table}
 \end{landscape}
 }
+
+\subsection{Research Gap and Our Approach}\label{subsection::gap}
+
+Research on this problem comes from three directions. Studies on admission prediction in the ED check fairness for race and sex, but each makes a single prediction early in the visit, and none examines insurance~\cite{lett2025intersectional,liu2024faim,licoppe2026assessing}. Predictive process monitoring, and one deployed ED tool, make predictions at many moments of a running case or visit, but they do not examine fairness~\cite{teinemaa2019outcome,teinemaa2018temporal,king2022machine}. Fairness research in predictive process monitoring shows that bias in predictions on process data can be reduced. It relies, however, on simulated logs, on attributes that the authors added, or on attributes of staff and organisations, and none of these studies reports fairness separately for different moments of a case~\cite{deleoni2025achieving,peeperkorn2025achieving,dasilva2025towards,kappel2026human,mohrlein2025fairloop,desantis2027fairness}. At the same time, decisions in the ED already differ between insurance groups~\cite{venkatesh2019association,prucnal2025patterns}, and in MIMIC-IV-ED insurance is among the attributes most strongly linked to the discharge decision~\cite{andreswari2026fairness}.
+
+Among the studies reviewed here, none brings together three things that the business problem requires. First, no fairness study in predictive process monitoring uses real attributes of the people whose cases are recorded. The only process mining study with real attributes of patients describes the process and makes no predictions~\cite{andreswari2026fairness}. Second, none of these studies uses data from a real care process. The hospital logs used so far are simulated or record billing~\cite{deleoni2025achieving,kappel2026human,mohrlein2025fairloop,desantis2027fairness}. Third, fairness has not been compared between moments of a running case, either in process monitoring or in healthcare. The only study among those reviewed that did so comes from education~\cite{rzepka2022fairness}.
+
+% TODO (Alina, 2026-10-18): paragraphs 3 (our approach) and 4 (bridge to the research question) follow once the approach is decided.
