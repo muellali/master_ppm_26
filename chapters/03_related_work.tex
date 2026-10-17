@@ -153,23 +153,23 @@ So far, fairness methods for process predictions have been tested on simulated l
   \setlength{\tabcolsep}{3pt}
   \caption{Fairness studies in process mining compared with this thesis}\label{table::fairness_ppm}
   \makebox[\linewidth][c]{%
-  \begin{tabularx}{24.5cm}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+  \begin{tabularx}{24.5cm}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
-    \textbf{Study} & \textbf{Task} & \textbf{Synthetic log} & \textbf{Real log and sensitive attribute} & \textbf{Healthcare process} & \textbf{Mitigation stage} & \textbf{Running cases} & \textbf{Fairness per moment} & \textbf{Time-aware split} & \textbf{Decision named} & \textbf{Fairness metric(s)} & \textbf{Performance metric(s)} \\
+    \textbf{Study} & \textbf{Task} & \textbf{Synthetic log} & \textbf{Real log and sensitive attribute} & \textbf{Mitigation stage} & \textbf{Running cases} & \textbf{Fairness per moment} & \textbf{Time-aware split} & \textbf{Decision named} & \textbf{Fairness metric(s)} & \textbf{Performance metric(s)} \\
     \midrule
-    \multicolumn{12}{@{}l}{\textit{Fairness methods in process mining}} \\
-    Qafari \& van der Aalst~\cite{qafari2019fairness} & Root cause analysis (e.g.\ delays) & No & Yes; discrimination added & Hospital billing (not care) & Post (relabel tree leaves) & Partly (case up to an event) & No & No & Yes & Demographic parity & Accuracy \\
-    de Leoni \& Padella~\cite{deleoni2025achieving} & Outcome; total time & Yes (hiring, hospital) & Yes; real attributes of staff and organisations & Simulated hospital & In (adversarial) & All prefixes, pooled & No & Yes & Partly & Shapley values; equalized odds & Absolute percentage accuracy; F-score \\
-    Peeperkorn \& De Vos~\cite{peeperkorn2025achieving} & Outcome & Yes (hiring, lending, renting) & No & No (hospital log left out) & In (Wasserstein term in the loss) & Prefixes up to 6 events, pooled & No & No & Yes & Demographic parity at a threshold; ABPC and ABCC (no threshold) & AUC, accuracy, F1 \\
-    da Silva et al.~\cite{dasilva2025towards} & Outcome (job offer) & Yes (hiring) & No & No & Pre, in and post & No (complete cases) & No & Yes & Partly & Disparate impact, equalized odds & Accuracy, precision, recall, F1 \\
-    Käppel et al.~\cite{kappel2026human} & Next activity & Yes (cancer screening) & Yes; gender added, age in one log & Simulated cancer screening; hospital billing & Human in the loop (experts edit rules) & Windows of 3 events & No & No & Yes & Demographic parity & Accuracy \\
-    Möhrlein et al.~\cite{mohrlein2025fairloop} & Next activity (tool) & Yes (cancer screening) & No & Simulated cancer screening & Human in the loop & Not described & No & Not described & Yes & None (experts judge the rules) & Accuracy, precision, recall, F1 \\
-    De Santis et al.~\cite{desantis2027fairness} & Next activity to recommend & No & Yes; gender added, age in one log; real organisation country & Hospital billing & In (fairness rule during training) & One random prefix per test case & No & Yes & Yes & Counterfactual (CF-MSE, CF-RECC) & MAE; simulated effect of recommendations \\
+    \multicolumn{11}{@{}l}{\textit{Fairness in predictive process monitoring}} \\
+    de Leoni \& Padella~\cite{deleoni2025achieving} & Outcome; total time & Yes (hiring, hospital) & Yes: incident management (VINST); real attributes of staff and organisations & In (adversarial) & All prefixes, pooled & No & Yes & Partly & Shapley values; equalized odds & Absolute percentage accuracy; F-score \\
+    Peeperkorn \& De Vos~\cite{peeperkorn2025achieving} & Outcome & Yes (hiring, lending, renting; hospital log left out) & No & In (Wasserstein term in the loss) & Prefixes up to 6 events, pooled & No & No & Yes & Demographic parity at a threshold; ABPC and ABCC (no threshold) & AUC, accuracy, F1 \\
+    da Silva et al.~\cite{dasilva2025towards} & Outcome (job offer) & Yes (hiring) & No & Pre, in and post & No (complete cases) & No & Yes & Partly & Disparate impact, equalized odds & Accuracy, precision, recall, F1 \\
+    Käppel et al.~\cite{kappel2026human} & Next activity & Yes (cancer screening) & Yes: loan applications and hospital billing (billing, not care); gender added, age in one log & Human in the loop (experts edit rules) & Windows of 3 events & No & No & Yes & Demographic parity & Accuracy \\
+    Möhrlein et al.~\cite{mohrlein2025fairloop} & Next activity (tool) & Yes (cancer screening) & No & Human in the loop & Not described & No & Not described & Yes & None (experts judge the rules) & Accuracy, precision, recall, F1 \\
+    De Santis et al.~\cite{desantis2027fairness} & Next activity to recommend & No & Yes: loan applications and hospital billing (billing, not care), gender added, age in one log; incident management, real organisation country & In (fairness rule during training) & One random prefix per test case & No & Yes & Yes & Counterfactual (CF-MSE, CF-RECC) & MAE; simulated effect of recommendations \\
     \midrule
-    \multicolumn{12}{@{}l}{\textit{Fairness analysis on real ED process data}} \\
-    Andreswari et al.~\cite{andreswari2026fairness} & Descriptive analysis of triage (no prediction) & No & Yes; real patient attributes (age, gender, race, language, insurance) & ED (MIMICEL) & None & -- & -- & -- & Yes & Statistical tests (Kruskal-Wallis, chi-square, effect sizes) & -- \\
+    \multicolumn{11}{@{}l}{\textit{Fairness in process mining without prediction}} \\
+    Qafari \& van der Aalst~\cite{qafari2019fairness} & Root cause analysis (e.g.\ delays) & No & Yes: hospital billing (billing, not care); discrimination added & Post (relabel tree leaves) & Partly (case up to an event) & No & No & Yes & Demographic parity & Accuracy \\
+    Andreswari et al.~\cite{andreswari2026fairness} & Descriptive analysis of triage & No & Yes: MIMICEL (emergency department); real patient attributes (age, gender, race, language, insurance) & None & -- & -- & -- & Yes & Statistical tests (Kruskal-Wallis, chi-square, effect sizes) & -- \\
     \midrule
-    This thesis & Outcome (hospital admission) & No & Yes; real patient attribute (insurance) & ED (MIMICEL) & To choose & Two decision points & Yes & Yes & Yes & To choose & To choose \\
+    This thesis & Outcome (hospital admission) & No & Yes: MIMICEL (emergency department); real patient attribute (insurance) & To choose & Two decision points & Yes & Yes & Yes & To choose & To choose \\
     \bottomrule
   \end{tabularx}}
 
