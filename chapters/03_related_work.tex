@@ -151,25 +151,25 @@ So far, fairness methods for process predictions have been tested on simulated l
   \centering
   \scriptsize
   \setlength{\tabcolsep}{3pt}
-  \caption{Fairness studies in predictive process monitoring compared with this thesis}\label{table::fairness_ppm}
+  \caption{Fairness studies in predictive process monitoring}\label{table::fairness_ppm}
   \makebox[\linewidth][c]{%
-  \begin{tabularx}{25cm}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{1.2cm}>{\raggedright\arraybackslash}p{1.2cm}>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+  \begin{tabularx}{25cm}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
-    \textbf{Study} & \textbf{Task} & \textbf{Synthetic log} & \textbf{Real log} & \textbf{Sensitive attribute} & \textbf{Mitigation stage} & \textbf{Running cases} & \textbf{Fairness per moment} & \textbf{Time-aware split} & \textbf{Decision named} & \textbf{Fairness metric(s)} & \textbf{Performance metric(s)} \\
+    \textbf{Study} & \textbf{Task} & \textbf{Synthetic log} & \textbf{Real log} & \textbf{Sensitive attribute} & \textbf{Mitigation stage} & \textbf{Running cases} & \textbf{Fairness per moment} & \textbf{Time-aware split} & \textbf{Fairness metric(s)} & \textbf{Performance metric(s)} \\
     \midrule
-    de Leoni \& Padella~\cite{deleoni2025achieving} & Outcome; total time & Yes (hiring, hospital) & Yes: incident management (VINST) & Simulated; real, of staff and organisations & In (adversarial) & All prefixes, pooled & No & Yes & Partly & Shapley values; equalized odds & Absolute percentage accuracy; F-score \\
-    Peeperkorn \& De Vos~\cite{peeperkorn2025achieving} & Outcome & Yes (hiring, lending, renting; hospital log left out) & No & Simulated & In (Wasserstein term in the loss) & Prefixes up to 6 events, pooled & No & No & Yes & Demographic parity at a threshold; ABPC and ABCC (no threshold) & AUC, accuracy, F1 \\
-    da Silva et al.~\cite{dasilva2025towards} & Outcome (job offer) & Yes (hiring) & No & Simulated & Pre, in and post & No (complete cases) & No & Yes & Partly & Disparate impact, equalized odds & Accuracy, precision, recall, F1 \\
-    Käppel et al.~\cite{kappel2026human} & Next activity & Yes (cancer screening) & Yes: loan applications; hospital billing & Simulated; added (gender, age) & In (manually by an expert) & Windows of 3 events & No & No & Yes & Demographic parity & Accuracy \\
-    Möhrlein et al.~\cite{mohrlein2025fairloop} & Next activity (tool) & Yes (cancer screening) & No & Simulated & In (manually by an expert) & Not described & No & Not described & Yes & None (experts judge the rules) & Accuracy, precision, recall, F1 \\
-    De Santis et al.~\cite{desantis2027fairness} & Next activity to recommend & No & Yes: loan applications; hospital billing; incident management & Added (gender, age); real, of organisations & In (fairness rule during training) & One random prefix per test case & No & Yes & Yes & Counterfactual (CF-MSE, CF-RECC) & MAE; simulated effect of recommendations \\
+    de Leoni \& Padella~\cite{deleoni2025achieving} & Outcome; total time & Yes (hiring, hospital) & Yes: incident management (VINST) & Simulated; real, of staff and organisations & In (adversarial) & All prefixes, pooled & No & Yes & Shapley values; equalized odds & Absolute percentage accuracy; F-score \\ \addlinespace[1.8ex]
+    Peeperkorn \& De Vos~\cite{peeperkorn2025achieving} & Outcome & Yes (hiring, lending, renting; hospital log left out) & No & Simulated & In (Wasserstein term in the loss) & Prefixes up to 6 events, pooled & No & No & Demographic parity at a threshold; ABPC and ABCC (no threshold) & AUC, accuracy, F1 \\ \addlinespace[1.8ex]
+    da Silva et al.~\cite{dasilva2025towards} & Outcome (job offer) & Yes (hiring) & No & Simulated & Pre, in and post & No (complete cases) & No & Yes & Disparate impact, equalized odds & Accuracy, precision, recall, F1 \\ \addlinespace[1.8ex]
+    Käppel et al.~\cite{kappel2026human} & Next activity & Yes (cancer screening) & Yes: loan applications; hospital billing & Simulated; added (gender, age) & In (manually by an expert) & Windows of 3 events & No & No & Demographic parity & Accuracy \\ \addlinespace[1.8ex]
+    Möhrlein et al.~\cite{mohrlein2025fairloop} & Next activity (tool) & Yes (cancer screening) & No & Simulated & In (manually by an expert) & Not described & No & Not described & None (experts judge the rules) & Accuracy, precision, recall, F1 \\ \addlinespace[1.8ex]
+    De Santis et al.~\cite{desantis2027fairness} & Next activity to recommend & No & Yes: loan applications; hospital billing; incident management & Added (gender, age); real, of organisations & In (fairness rule during training) & One random prefix per test case & No & Yes & Counterfactual (CF-MSE, CF-RECC) & MAE; simulated effect of recommendations \\ \addlinespace[1.8ex]
     \midrule
-    This thesis & Outcome (hospital admission) & No & Yes: MIMICEL (emergency department) & Real, of patients (insurance) & To choose & Two decision points & Yes & Yes & Yes & To choose & To choose \\
+    This thesis & Outcome (hospital admission) & No & Yes: MIMICEL (emergency department) & Real, of patients (insurance) & To choose & Two decision points & Yes & Yes & To choose & To choose \\
     \bottomrule
   \end{tabularx}}
 
   \smallskip
-  \makebox[\linewidth][c]{\parbox{25cm}{\scriptsize\raggedright \textit{Sensitive attribute:} simulated = part of a simulated log; added = added to a real log by the authors; real = recorded in the real log. \textit{Running cases:} how a study handles cases that are still running. \textit{Fairness per moment:} fairness reported separately for different moments of a case. \textit{Time-aware split:} models trained on earlier cases and tested on later ones. \textit{Decision named:} the paper names the real decision that the result supports (partly: only in general terms).}}
+  \makebox[\linewidth][c]{\parbox{25cm}{\scriptsize\raggedright \textit{Sensitive attribute:} simulated = part of a simulated log; added = added to a real log by the authors; real = recorded in the real log. \textit{Running cases:} how a study handles cases that are still running. \textit{Fairness per moment:} fairness reported separately for different moments of a case. \textit{Time-aware split:} models trained on earlier cases and tested on later ones.}}
 \end{table}
 \end{landscape}
 }
