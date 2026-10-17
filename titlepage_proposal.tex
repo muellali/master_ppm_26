@@ -1,4 +1,6 @@
 % Title page for the research proposal (English labels).
+% Header: the M.Sc. Wirtschaftsinformatik is offered jointly by the School of
+% Business and Economics and the Institut für Informatik (supervising chair).
 % Based on \makeTitel in Institutsvorlage.tex (HU Institut für Informatik):
 % same header and layout, but with the fields needed for a proposal.
 % Needs Institutsvorlage.tex to be loaded first (uses \TitelPunktLinie).
@@ -17,6 +19,8 @@
 \newcommand{\pstudentid}[1]{\renewcommand*{\@pStudentID}{#1}} % student ID (Matrikelnummer)
 \newcommand*{\@pEmail}{\TitelPunktLinie{6cm}}
 \newcommand{\pemail}[1]{\renewcommand*{\@pEmail}{#1}}         % email
+\newcommand*{\@pProgramme}{\TitelPunktLinie{6cm}}
+\newcommand{\pprogramme}[1]{\renewcommand*{\@pProgramme}{#1}} % study programme
 \newcommand*{\@pSupervisor}{\TitelPunktLinie{5cm}}
 \newcommand{\psupervisor}[1]{\renewcommand*{\@pSupervisor}{#1}} % supervisor
 \newcommand*{\@pDate}{\TitelPunktLinie{3cm}}
@@ -32,7 +36,7 @@
 			\textsc{%
 				\hspace{-0.4mm}\textls*[68]{\Large Humboldt-Universität zu Berlin}\\
 				\normalsize \textls*[45]{
-					Mathematisch-Naturwissenschaftliche Fakultät\\
+					Wirtschaftswissenschaftliche Fakultät\\
 					Institut für Informatik
 				}
 			}
@@ -55,7 +59,8 @@
 			\begin{tabularx}{\textwidth}{@{}l@{\quad}>{\raggedright\arraybackslash}X@{}}
 				Submitted by: & \@pAuthor \\
 				Student ID:   & \@pStudentID \\
-				Email:        & \@pEmail
+				Email:        & \@pEmail \\
+				Programme:    & \@pProgramme
 				\vspace{0.5\baselineskip}\\
 				Supervisor:   & \@pSupervisor
 				\vspace{0.5\baselineskip}\\
