@@ -1,0 +1,62 @@
+\section{Research Method}\label{section::method}
+
+\subsection{Research Approach}\label{subsection::approach}
+
+The planned thesis will follow the methodology of algorithm engineering by Mendling et al.~\cite{10.1145/3769071}. It will not develop a new algorithm. It will produce empirical knowledge about existing designs: bias-mitigation methods that have already been published will be tested in a setting where they have not been tested yet, a real emergency department process with real attributes of patients.
+
+The study will have two parts. A descriptive part will come first. For each insurance group and each decision point, it will report how many visits there are, how often they end in an admission, how many visits reach the second decision point, and how the groups differ in acuity, age and mode of arrival. These numbers will help to interpret the later results. If fairness differs between the two decision points, the descriptive part will show whether different patients reach them. It will also show whether the groups are large enough, since fairness measures become unstable for small groups~\cite{sanchezmarques2026addressing}.
+
+The second part will be an experiment with two factors: the mitigation method and the decision point at which the prediction is made.
+
+\subsection{Data and Patient Groups}\label{subsection::data}
+
+The data will come from MIMICEL, an event log built from MIMIC-IV-ED~\cite{wei2023mimicel}. Access to the data has not been granted yet. All numbers in this section are therefore taken from published studies and will be recomputed once the data is available. MIMICEL contains 425,028 stays of 205,466 patients in the emergency department of the Beth Israel Deaconess Medical Center in Boston~\cite{wei2025curation,lett2025intersectional}. Each stay is one case. The log has six activities: entering the ED, triage, vital sign check, medicine reconciliation, medicine dispensation and discharge from the ED~\cite{wei2025curation}.
+
+Insurance is recorded only in the hospital admissions table of MIMIC-IV, so it is known only for visits that end in an admission~\cite{mimicdocs}. Taken from the visit itself, it would therefore reveal the outcome. The planned thesis will instead take insurance from the patient's most recent earlier hospital stay and will study only visits of patients with such a stay. This has two drawbacks: insurance may have changed since the earlier stay, and whether a patient has an earlier stay depends on past admission decisions. Table~\ref{table::insurance_groups} shows the insurance categories.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Insurance categories in MIMICEL and their planned role. Visit counts are taken from Andreswari et al.~\cite{andreswari2026fairness} (appendix), who assigned insurance with their own preprocessing; they are not yet restricted to patients with an earlier stay.}\label{table::insurance_groups}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedleft\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Category} & \textbf{Visits} & \textbf{Planned role} & \textbf{Reason} \\
+    \midrule
+    Medicaid & 42,437 & Main comparison & Public insurance for people with low income \\
+    Private & 56,357 & Main comparison (reference group) & \\
+    Medicare & 95,009 & Descriptive part only & Covers mainly older patients, so differences are mixed with age~\cite{roosli2022peeking} \\
+    Other & 5,348 & Descriptive part only & Mixed category; its content is not documented \\
+    No charge & 4 & Not used & Too few visits \\
+    Unknown & 225,797 & Not used & Mostly visits without an admission \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The main comparison will be Medicaid against private insurance. Uninsured patients cannot be studied: the closest category, ``no charge'', has four visits.
+
+\subsection{Prediction Task}\label{subsection::task}
+
+The model will predict whether a visit ends in a hospital admission. A visit will count as admitted if its disposition is ``admitted''; all other dispositions will count as not admitted, including going home, transfer to another hospital and leaving without being seen. Licoppe et al.\ use the same definition on MIMIC-IV-ED~\cite{licoppe2026assessing}. Two details will be checked once the data is available: 15\,\% of visits with the disposition ``home'' still have a hospital admission identifier~\cite{wei2025curation}, and coding transfers differently may change the results.
+
+Predictions will be made at two decision points: at triage, and at the first medicine dispensation. At each point, the model will use only events and attributes recorded up to that moment, as is usual in outcome-oriented predictive process monitoring~\cite{teinemaa2019outcome}. The diagnosis, for example, is recorded with the discharge event and will therefore not be used.
+
+Not every visit reaches the second decision point. Medicine is dispensed in 295,998 of the 425,028 stays, in 81.5\,\% of the most urgent stays but only 27.6\,\% of the least urgent ones~\cite{wei2025curation}. A difference between the two decision points could therefore come from the different patients rather than from the moment of prediction. To separate the two, the triage model will also be evaluated on only those visits that later reach the second decision point (Table~\ref{table::evaluation_plan}).
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Planned models and evaluated visits per decision point}\label{table::evaluation_plan}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Result} & \textbf{Model} & \textbf{Evaluated visits} & \textbf{Purpose} \\
+    \midrule
+    Triage & Triage model & All test visits & Accuracy and fairness at triage \\
+    Triage, same patients & Triage model & Test visits that later reach the first medication & Comparison with decision point 2 on the same visits \\
+    First medication & Decision point 2 model & Test visits that reach the first medication & Accuracy and fairness at the first medication \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+One limitation remains. The event log records when a patient leaves the ED, but not when the decision to admit was made~\cite{wei2025curation}. For some visits, the first medication may come after that decision, for example while the patient waits for a bed. A check after data access will show how often this happens.
+
+% TODO (Alina): subsections on the model and evaluation set-up, mitigation methods, measures, and validity follow once these are decided.
