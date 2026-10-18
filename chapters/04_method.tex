@@ -34,7 +34,7 @@ Insurance is recorded only in the hospital admissions table of MIMIC-IV, so it i
 
 The main comparison will be Medicaid against private insurance. Uninsured patients cannot be studied: the closest category, ``no charge'', has four visits.
 
-\subsection{Prediction Task}\label{subsection::task}
+\subsection{Prediction Task and Model}\label{subsection::task}
 
 The model will predict whether a visit ends in a hospital admission. A visit will count as admitted if its disposition is ``admitted''; all other dispositions will count as not admitted, including going home, transfer to another hospital and leaving without being seen. Licoppe et al.\ use the same definition on MIMIC-IV-ED~\cite{licoppe2026assessing}. Two details will be checked once the data is available: 15\,\% of visits with the disposition ``home'' still have a hospital admission identifier~\cite{wei2025curation}, and coding transfers differently may change the results.
 
@@ -59,4 +59,53 @@ Not every visit reaches the second decision point. Medicine is dispensed in 295,
 
 One limitation remains. The event log records when a patient leaves the ED, but not when the decision to admit was made~\cite{wei2025curation}. For some visits, the first medication may come after that decision, for example while the patient waits for a bed. A check after data access will show how often this happens.
 
-% TODO (Alina): subsections on the model and evaluation set-up, mitigation methods, measures, and validity follow once these are decided.
+The planned thesis will use XGBoost, a model based on gradient-boosted decision trees. It performed well in a benchmark of outcome-oriented predictive process monitoring~\cite{teinemaa2019outcome} and has been used to predict hospital admission from ED data~\cite{xie2022benchmarking,lett2025intersectional,king2022machine}. An LSTM is planned as an optional extension.
+
+The data will be cleaned before training. Which steps are needed, for example for implausible or missing values, can only be decided once the data is available.
+
+The visits will be split by time: the model will be trained on the oldest visits, tuned on a validation set of the following visits and tested on the most recent ones. This follows how a model is used in practice, where only past cases are known~\cite{teinemaa2019outcome}.
+
+\subsection{Fairness Measures}\label{subsection::fairness_measures}
+
+Fairness can be measured in many ways, and which measure fits depends on how the prediction is used~\cite{rajkomar2018ensuring}. Table~\ref{table::fairness_measures} lists the group measures described by Pohl et al.~\cite{pohl2023discrimination} and those used in related clinical studies, together with an assessment for the planned use. Individual and counterfactual fairness are not included, because they need an agreed measure of similarity between patients or a causal model of how insurance affects the other data~\cite{pohl2023discrimination,desantis2027fairness}.
+
+\afterpage{%
+\begin{landscape}
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{2.5pt}
+  \captionsetup{width=22.3cm}
+  \caption{Fairness measures considered. Each measure compares Medicaid and privately insured patients. The four middle columns rate each measure against properties that matter for the planned use. The last column gives the overall assessment; its bold label shows whether the measure is planned to be used.}\label{table::fairness_measures}
+  \makebox[\linewidth][c]{%
+  \begin{tabularx}{25cm}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{5.3cm}>{\raggedright\arraybackslash}p{1.75cm}>{\raggedright\arraybackslash}p{1.85cm}>{\raggedright\arraybackslash}p{1.95cm}>{\raggedright\arraybackslash}p{1.55cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Measure} & \textbf{Question in the planned use} & \textbf{Captures missed admissions} & \textbf{Comparable between decision points} & \textbf{Independent of recorded admissions} & \textbf{Needs no threshold} & \textbf{Assessment and planned use} \\
+    \midrule
+    \multicolumn{7}{@{}p{24.8cm}@{}}{\textbf{A: How often each group is predicted to be admitted.} These measures compare the predictions of the two groups only. They do not use the recorded outcome.} \\
+    Demographic parity; disparate impact & Do both groups receive early bed requests equally often? & Partly & No & Yes & No & \textbf{Main (demographic parity).} Fairness as equal allocation; a gap is expected if admission needs differ~\cite{lett2025intersectional}; the ratio adds no information \\ \addlinespace[0.8ex]
+    Conditional demographic parity & Do patients with the same urgency receive bed requests equally often? & Partly & Partly & Yes & No & \textbf{Not planned.} Equal allocation among patients with similar urgency; acuity is itself a decision by staff \\ \addlinespace[0.8ex]
+    ABPC, ABCC & Do predicted probabilities differ between the groups at any cut-off? & Partly & No & Yes & Yes & \textbf{Not planned.} Threshold-free form of demographic parity; rarely used in clinical studies \\ \addlinespace[0.8ex]
+    Coverage- and ranking-based & Is a fixed list of selected patients balanced? & -- & -- & Yes & No & \textbf{Not planned.} Not suitable, since bed planning does not select a fixed number of patients \\
+    \addlinespace[1.2ex]
+    \multicolumn{7}{@{}p{24.8cm}@{}}{\textbf{B: Errors among patients with the same recorded outcome.} These measures compare the errors of the model between the groups, separately for patients who were admitted and patients who were not.} \\
+    Equal opportunity & Among admitted patients, are both groups missed equally often? & Yes & Yes & No & No & \textbf{Main.} Closest to the harm in the planned use, if the recorded admissions are trusted \\ \addlinespace[0.8ex]
+    Predictive equality & Are non-admitted patients wrongly predicted to be admitted equally often? & No & Yes & No & No & \textbf{Additional (as part of equalized odds).} The hospital's cost of unneeded bed requests, not harm to patients \\ \addlinespace[0.8ex]
+    Equalized odds & Are both kinds of error equally frequent? & Yes & Yes & No & No & \textbf{Additional.} Stricter than equal opportunity; widely used in related studies \\ \addlinespace[0.8ex]
+    Balanced error rate equality & Is the average error the same? & Partly & Yes & No & No & \textbf{Not planned.} Hides which kind of error differs \\ \addlinespace[0.8ex]
+    Accuracy and treatment equality & Is the model right equally often; is the mix of errors the same? & No & No & No & No & \textbf{Not planned.} Not suitable, since both treat the two errors as equally harmful \\ \addlinespace[0.8ex]
+    AUC gap & Does the model separate admitted from non-admitted patients equally well? & Partly & Yes & No & Yes & \textbf{Additional.} Shows whether the model is less accurate for one group \\
+    \addlinespace[0.8ex]
+    \multicolumn{7}{@{}p{24.8cm}@{}}{\textbf{C: Reliability of a prediction.} These measures start from what the model predicted and compare how often this turned out to be right in each group.} \\
+    Predictive parity & When a patient is predicted to be admitted, is this equally often right? & Partly & No & No & No & \textbf{Additional.} Matters if staff decide whether to act on a prediction \\ \addlinespace[0.8ex]
+    False omission rate parity & When a patient is predicted not to be admitted, is this equally often wrong? & Partly & No & No & No & \textbf{Not planned.} Missed admissions seen from the hospital's side; mixed with the admission rate \\ \addlinespace[0.8ex]
+    Calibration within groups & Does a predicted probability mean the same in both groups? & Partly & Yes & No & Yes & \textbf{Additional.} Relevant if probabilities are used, e.g.\ to estimate beds needed~\cite{king2022machine} \\
+    \bottomrule
+  \end{tabularx}}
+\end{table}
+\end{landscape}
+}
+
+The planned thesis will use equal opportunity and demographic parity as main measures. A predicted admission lets the hospital request a bed early, so the harmful error is a missed admission; Pohl et al.\ call this an assistive context~\cite{pohl2023discrimination}. Equal opportunity compares exactly this error between the groups. It takes the recorded admissions as correct, however, although they are decisions by ED staff that may themselves differ by insurance~\cite{rajkomar2018ensuring}. Demographic parity does not use them. Four additional measures cover what the main ones leave open. Equalized odds also counts unneeded bed requests and is widely used in related studies~\cite{liu2024faim,dasilva2025towards}, so the results can be compared with them. Predictive parity shows whether a predicted admission is equally reliable in both groups, which matters if staff decide whether to act on it~\cite{rajkomar2018ensuring}. The AUC gap~\cite{roosli2022peeking} and calibration within groups~\cite{pfohl2021empirical} need no threshold and can therefore be interpreted although the hospital's threshold is unknown. Demographic parity and predictive parity change with the admission rate. For these two, the evaluation on the same visits (Table~\ref{table::evaluation_plan}) separates the effect of the decision point from that of the different patients. The chosen measures cannot all be met at once when admission rates differ~\cite{paulus2020predictably}. Reporting them together shows what an intervention trades off and prevents it from being judged only by the measure it was built to optimise.
+
+% TODO (Alina): subsections on mitigation methods and validity follow once these are decided.
