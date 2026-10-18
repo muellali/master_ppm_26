@@ -59,11 +59,13 @@ Not every visit reaches the second decision point. Medicine is dispensed in 295,
 
 One limitation remains. The event log records when a patient leaves the ED, but not when the decision to admit was made~\cite{wei2025curation}. For some visits, the first medication may come after that decision, for example while the patient waits for a bed. A check after data access will show how often this happens.
 
-The planned thesis will use XGBoost, a model based on gradient-boosted decision trees. It performed well in a benchmark of outcome-oriented predictive process monitoring~\cite{teinemaa2019outcome} and has been used to predict hospital admission from ED data~\cite{xie2022benchmarking,lett2025intersectional,king2022machine}. An LSTM is planned as an optional extension.
+The planned thesis will use XGBoost, a model based on gradient-boosted decision trees~\cite{chen2016xgboost}. It performed well in a benchmark of outcome-oriented predictive process monitoring~\cite{teinemaa2019outcome} and has been used to predict hospital admission from ED data~\cite{xie2022benchmarking,lett2025intersectional,king2022machine}. An LSTM is planned as an optional extension.
 
 The data will be cleaned before training. Which steps are needed, for example for implausible or missing values, can only be decided once the data is available.
 
 The visits will be split by time: the model will be trained on the oldest visits, tuned on a validation set of the following visits and tested on the most recent ones. This follows how a model is used in practice, where only past cases are known~\cite{teinemaa2019outcome}.
+
+The performance measures will be chosen once the share of admitted visits in the data is known. If admissions are rare, measures that remain informative for rare outcomes will be used.
 
 \subsection{Fairness Measures}\label{subsection::fairness_measures}
 
@@ -108,4 +110,65 @@ Fairness can be measured in many ways, and which measure fits depends on how the
 
 The planned thesis will use equal opportunity and demographic parity as main measures. A predicted admission lets the hospital request a bed early, so the harmful error is a missed admission; Pohl et al.\ call this an assistive context~\cite{pohl2023discrimination}. Equal opportunity compares exactly this error between the groups. It takes the recorded admissions as correct, however, although they are decisions by ED staff that may themselves differ by insurance~\cite{rajkomar2018ensuring}. Demographic parity does not use them. Four additional measures cover what the main ones leave open. Equalized odds also counts unneeded bed requests and is widely used in related studies~\cite{liu2024faim,dasilva2025towards}, so the results can be compared with them. Predictive parity shows whether a predicted admission is equally reliable in both groups, which matters if staff decide whether to act on it~\cite{rajkomar2018ensuring}. The AUC gap~\cite{roosli2022peeking} and calibration within groups~\cite{pfohl2021empirical} need no threshold and can therefore be interpreted although the hospital's threshold is unknown. Demographic parity and predictive parity change with the admission rate. For these two, the evaluation on the same visits (Table~\ref{table::evaluation_plan}) separates the effect of the decision point from that of the different patients. The chosen measures cannot all be met at once when admission rates differ~\cite{paulus2020predictably}. Reporting them together shows what an intervention trades off and prevents it from being judged only by the measure it was built to optimise.
 
-% TODO (Alina): subsections on mitigation methods and validity follow once these are decided.
+\subsection{Bias Mitigation}\label{subsection::mitigation}
+
+The mitigation methods will be taken from the FairPM taxonomy, which groups interventions by the stage at which they act~\cite{revoredo2026fairpm}. Pre-processing interventions change the training data before the model learns. Table~\ref{table::preprocessing} assesses them for the planned use.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Pre-processing interventions of the FairPM taxonomy. The last column gives the assessment; its bold label shows whether the intervention is planned to be used}\label{table::preprocessing}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Intervention} & \textbf{What it does} & \textbf{Evidence} & \textbf{Assessment and planned use} \\
+    \midrule
+    Variable blinding & Insurance is not used as an input to the model & Removing the sensitive attribute leaves discrimination through correlated attributes~\cite{pedreschi2008discrimination,qafari2019fairness,kamiran2012data}; Kamiran and Calders use it as their baseline~\cite{kamiran2012data} & \textbf{Baseline.} Simple, but not sufficient on its own \\ \addlinespace[0.8ex]
+    Transformation & Changes the other attributes so that they no longer reveal the group & Repair of numerical attributes~\cite{feldman2015certifying}, learned representations~\cite{zemel2013learning}, optimized transformation of attributes and labels~\cite{calmon2017optimized} & \textbf{Not planned.} Insurance is needed to transform each new visit; unordered attributes such as the mode of arrival are not supported~\cite{feldman2015certifying}; transformed vital signs lose their clinical meaning \\ \addlinespace[0.8ex]
+    Reweighing & Weights the training visits so that insurance and admission become independent & Reduced discrimination while keeping accuracy high~\cite{kamiran2012data}; little loss in accuracy on simulated process logs~\cite{dasilva2025towards}; effective only under low bias in a clinical study~\cite{sanchezmarques2026addressing} & \textbf{Planned.} Insurance is needed only for training; XGBoost accepts weights; aims at demographic parity \\ \addlinespace[0.8ex]
+    Sampling & Duplicates or removes training visits per combination of insurance and outcome, or trains a separate model per group~\cite{revoredo2026fairpm} & Resampling of borderline cases gave one of the best trade-offs between fairness and accuracy~\cite{kamiran2012data} & \textbf{Optional extension.} Copies or drops real visits; a separate model for Medicaid patients would learn from fewer visits \\ \addlinespace[0.8ex]
+    Relabeling and perturbation & Changes the outcome of some training visits & Relabeling of borderline cases gave one of the best trade-offs~\cite{kamiran2012data}; not yet used in process mining~\cite{revoredo2026fairpm} & \textbf{Not planned.} Changes recorded admissions and treats the whole difference in admission rates as bias \\ \addlinespace[0.8ex]
+    Causal methods & Identify which attributes depend on the sensitive attribute & Not yet used in process mining; guide the choice of other interventions~\cite{revoredo2026fairpm} & \textbf{Optional extension.} Supports the choice of an intervention rather than reducing bias itself \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+In-processing interventions change how the model learns. Table~\ref{table::inprocessing} assesses them.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{In-processing interventions of the FairPM taxonomy. The last column gives the assessment; its bold label shows whether the intervention is planned to be used}\label{table::inprocessing}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Intervention} & \textbf{What it does} & \textbf{Evidence} & \textbf{Assessment and planned use} \\
+    \midrule
+    Adversarial learning & A second model tries to predict the group from the prediction, and the model learns to prevent this & Used for process predictions~\cite{deleoni2025achieving,dasilva2025towards}; lower accuracy and recall~\cite{dasilva2025towards}; training is hard to stabilise~\cite{zhang2018mitigating} & \textbf{Optional extension (only with the LSTM).} Needs a neural network \\ \addlinespace[0.8ex]
+    Bandits & Fair decisions in online learning with little training data & Not yet used in process mining~\cite{revoredo2026fairpm} & \textbf{Not planned.} The models are learned from historical data \\ \addlinespace[0.8ex]
+    Regularization: penalty in the loss & Adds a fairness term to the training loss & Penalty in the loss of an LSTM~\cite{peeperkorn2025achieving} and of XGBoost for demographic parity~\cite{ravichandran2020fairxgboost}; penalties lowered performance within almost all groups in clinical risk prediction~\cite{pfohl2021empirical} & \textbf{Not planned.} A version for equal opportunity in XGBoost would have to be developed \\ \addlinespace[0.8ex]
+    Regularization: FairGBM & Gradient boosting with a constraint on equal false-negative rates & Better trade-offs between fairness and accuracy than reductions~\cite{cruz2023fairgbm} & \textbf{Optional extension.} Targets equal opportunity directly, but is built on LightGBM, not XGBoost \\ \addlinespace[0.8ex]
+    Reweighing as in-processing: reductions & Retrains the model with changing weights until a fairness rule holds~\cite{agarwal2018reductions} & Fair but clearly less accurate for admission prediction on MIMIC-IV-ED~\cite{liu2024faim} & \textbf{Optional extension.} Works with XGBoost and can target equal opportunity, but gives only yes/no predictions~\cite{cruz2023fairgbm} \\ \addlinespace[0.8ex]
+    Reweighing as in-processing: FOMO & Learns sample weights that balance accuracy and missed cases~\cite{lacava2023optimizing} & Used for admission prediction on MIMIC-IV-ED~\cite{lett2025intersectional} & \textbf{Planned.} Works with XGBoost, targets missed admissions and keeps predicted probabilities; one model has to be chosen from the resulting set \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Post-processing interventions change the output of the trained model. Table~\ref{table::postprocessing} assesses them.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Post-processing interventions of the FairPM taxonomy. The last column gives the assessment; its bold label shows whether the intervention is planned to be used}\label{table::postprocessing}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Intervention} & \textbf{What it does} & \textbf{Evidence} & \textbf{Assessment and planned use} \\
+    \midrule
+    Thresholding: group-specific thresholds & Uses a separate threshold for each insurance group, chosen so that an error rate, such as the true positive rate, becomes equal & Implemented in Fairlearn~\cite{weerts2023fairlearn}; post-processing needs the group of each new case~\cite{agarwal2018reductions,cruz2023fairgbm} & \textbf{Planned.} Simple and can target equal opportunity directly; insurance must be known for every new visit, and patients are treated differently by insurance; the AUC gap and calibration stay unchanged \\ \addlinespace[0.8ex]
+    Calibration: equalized-odds post-processing & Adjusts the predictions, partly at random, so that both error rates become equal across groups & Changed fairness little on simulated process logs~\cite{dasilva2025towards}; effective under strong bias in a clinical study~\cite{sanchezmarques2026addressing}; lowered AUC without reliably reducing disparities for admission prediction on MIMIC-IV-ED~\cite{liu2024faim} & \textbf{Optional extension.} Insurance is needed at prediction time; randomised decisions; mixed evidence \\ \addlinespace[0.8ex]
+    Calibration: multicalibration & Adjusts the predicted probabilities until they are calibrated within each group & Reduced calibration errors of subgroups for admission prediction on MIMIC-IV-ED~\cite{lett2025intersectional} & \textbf{Optional extension.} Targets calibration, an additional measure, not the main ones; insurance is needed at prediction time \\ \addlinespace[0.8ex]
+    Transformation & Relabels leaves of a decision tree so that it depends less on the sensitive attribute & Applied to root cause analysis in process mining~\cite{qafari2019fairness} & \textbf{Not planned.} Built for a single decision tree, not for XGBoost \\ \addlinespace[0.8ex]
+    Visualization & Highlights unfair behaviour in the presentation of results & Proposed for process mining in FairPM~\cite{revoredo2026fairpm} & \textbf{Not planned.} Does not change the predictions \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% TODO (Alina): validity follows.
