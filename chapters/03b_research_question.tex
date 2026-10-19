@@ -1,18 +1,5 @@
 \section{Research Question}\label{section::research_question}
 
-The planned thesis will answer the following research question:
-
-\begin{quote}
-\textbf{RQ:} Which bias-mitigation interventions allow hospitals to obtain outcome-oriented predictive process monitoring models that are both accurate and fair across insurance groups when predictions are made at different decision points of the emergency department process?
-\end{quote}
-
-Four sub-questions break it down:
-
-\begin{description}
-  \item[SQ1:] How do Medicaid and privately insured patients differ in the recorded ED process and its outcome?
-  \item[SQ2:] How do pre-, in- and post-processing interventions change accuracy and the different fairness measures, including those they do not target?
-  \item[SQ3:] Does the fairness of the predictions, and the effect of the interventions, differ between triage and the first medicine dispensation?
-  \item[SQ4:] What do the interventions require in practice, and what do the remaining differences mean in missed admissions per group?
-\end{description}
+The planned thesis aims to answer the following research question: \emph{Which bias-mitigation interventions allow hospitals to obtain outcome-oriented predictive process monitoring models that are both accurate and fair across insurance groups when predictions are made at different decision points of the emergency department process?} The analysis will be guided by four sub-questions. How do Medicaid and privately insured patients differ in the recorded ED process and its outcome (SQ1)? How do pre-, in- and post-processing interventions change accuracy and the different fairness measures, including those they do not target (SQ2)? Does the fairness of the predictions, and the effect of the interventions, differ between triage and the first medicine dispensation (SQ3)? And what do the interventions require in practice, and what do the remaining differences mean in missed admissions per group (SQ4)?
 
 The question matters to hospitals. They want admission predictions early in the visit to plan beds~\cite{king2022machine}, while decisions in the ED already differ between insurance groups~\cite{venkatesh2019association,prucnal2025patterns}. Among the fairness studies in predictive process monitoring reviewed for this proposal, none uses a real care process with real attributes of patients, and none compares fairness between moments of a case~\cite{deleoni2025achieving,peeperkorn2025achieving,dasilva2025towards,kappel2026human,mohrlein2025fairloop,desantis2027fairness}. The answer is open: when admission rates differ between groups, the fairness measures cannot all be met at once~\cite{paulus2020predictably}, so an intervention that improves one measure may worsen another. The study is feasible because MIMICEL is available to credentialed researchers~\cite{wei2023mimicel}, access has been requested, and all planned interventions are published methods that work with XGBoost. The data will be used under PhysioNet's data use agreement. The expected contribution is empirical knowledge about existing designs~\cite{10.1145/3769071}: whether published bias-mitigation methods work in a real emergency department process, and whether this depends on the decision point.
