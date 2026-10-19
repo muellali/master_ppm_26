@@ -1,10 +1,9 @@
 \section{Introduction}\label{section::introduction}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
-sanctus est Lorem ipsum dolor sit amet. 
+Emergency departments (EDs) increasingly use machine learning to predict how a patient's visit will end. A prediction of hospital admission early in the visit lets staff request a bed sooner~\cite{king2022machine}. Predictive process monitoring makes such predictions while a case is still running~\cite{teinemaa2019outcome}.
+
+These models learn from past decisions, and in the ED these decisions already differ between patient groups, including by insurance~\cite{venkatesh2019association,prucnal2025patterns}. A prediction can carry these differences into the moment when staff act on it. The FairPM taxonomy describes how bias enters process mining and groups the interventions against it into pre-, in- and post-processing~\cite{revoredo2026fairpm}. So far, these interventions have been tested on simulated logs or on attributes added by the authors, and fairness has not been compared between moments of a running case.
+
+The planned thesis will test interventions from the three FairPM stages on real ED data. It will compare Medicaid and privately insured patients at two decision points: triage and the first medicine dispensation. The result will be empirical knowledge about existing methods in a real care process.
+
+Section~\ref{section::related_work} reviews related work, Section~\ref{section::research_question} states the research question, Section~\ref{section::method} describes the research method and Section~\ref{section::agenda} gives the agenda.
