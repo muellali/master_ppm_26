@@ -1,0 +1,29 @@
+\section{Agenda}\label{section::agenda}
+
+Table~\ref{table::agenda} shows the planned work. The weeks are counted from the official registration of the thesis, which starts the 120 days of writing time. The last weeks are kept as a buffer.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Agenda of the planned thesis}\label{table::agenda}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.2cm}@{}}
+    \toprule
+    \textbf{Week} & \textbf{Work package} & \textbf{Result} \\
+    \midrule
+    Before the start & Proposal passed. Data access given (PhysioNet approval; data use agreements for MIMICEL, MIMIC-IV and MIMIC-IV-ED signed; data downloaded). Thesis registered. Server access for the experiments. & Work can start \\ \addlinespace[0.8ex]
+    1 & Set up the code repository and a scripted pipeline. Load MIMICEL, report the basic log facts (cases, events, activities, variants) and check data quality. & Overview of the log; list of quality issues \\ \addlinespace[0.8ex]
+    2 & Set cleaning and inclusion rules. Take insurance from the earlier stay. Fix the outcome definition. & \textbf{M1:} group sizes known; if too small, switch to race and sex \\ \addlinespace[0.8ex]
+    3 & Descriptive part: group sizes, admission rates, acuity, age, mode of arrival, visits that reach the first medication & Answer to SQ1 \\ \addlinespace[0.8ex]
+    4 & Prepare the data set: cases cut at the two decision points, leakage check per feature, timing of the first medication; encoding, chief complaint, history features, missing values & Data set per decision point \\ \addlinespace[0.8ex]
+    5 & Time-based split. Baseline XGBoost without insurance at each decision point. Choose performance measures and threshold. & \textbf{M2:} baseline and evaluation pipeline (fairness measures, repeated runs, same visits) \\ \addlinespace[0.8ex]
+    6 & Pre-processing: reweighing & Results for reweighing \\ \addlinespace[0.8ex]
+    7--8 & In-processing: FOMO, including a rule for choosing one model & Results for FOMO \\ \addlinespace[0.8ex]
+    9 & Post-processing: group-specific thresholds & Results for thresholds \\ \addlinespace[0.8ex]
+    10 & All methods at both decision points with repeated runs and statistical tests; missed admissions per group & \textbf{M3:} all experiments done \\ \addlinespace[0.8ex]
+    11 & Analyse and interpret the results & Answers to SQ2--SQ4 \\ \addlinespace[0.8ex]
+    12--13 & Write the thesis: method, results, discussion, then introduction and conclusion; figures & \textbf{M4:} complete draft \\ \addlinespace[0.8ex]
+    14--16 & Buffer: revise the draft. If time allows, optional work: LSTM; race and sex, language, age; sampling, causal methods, reductions, FairGBM, equalized-odds post-processing, multicalibration & Optional results, if any \\ \addlinespace[0.8ex]
+    17 & Write the list of aids used, after the declaration of authorship and with the signed declaration. Final check of the formal rules. Submission. & Submitted thesis \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
