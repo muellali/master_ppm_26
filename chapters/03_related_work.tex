@@ -95,27 +95,27 @@ In the studies reviewed here, fairness of ED admission prediction has been check
   \centering
   \footnotesize
   \caption{Related prediction studies}\label{table::prediction_work}
-  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
     \toprule
     \textbf{Study} & \textbf{Prediction task} & \textbf{Data} & \textbf{Prediction moment(s)} & \textbf{Fairness checked} \\
     \midrule
     \multicolumn{5}{@{}l}{\textit{Admission prediction in the ED}} \\
-    Xie et al.~\cite{xie2022benchmarking} & Hospitalisation & MIMIC-IV-ED (441,437 visits) & Triage & No \\
-    Lett et al.~\cite{lett2025intersectional} & Admission & MIMIC-IV-ED; one children's ED & Triage (children's ED: first 60 minutes) & Race and ethnicity, gender \\
-    Liu et al.~\cite{liu2024faim} & Admission & MIMIC-IV-ED; one ED in Singapore & One, early in the visit (triage score, vital signs, past records) & Race, sex \\
-    Licoppe et al.~\cite{licoppe2026assessing} & Admission & MIMIC-IV-ED & Triage & Race \\
-    King et al.~\cite{king2022machine} & Admission, summed up for bed planning & One ED in London & Twelve moments, from arrival to 12 hours & No \\
+    Xie et al.~\cite{xie2022benchmarking} & Hospitalisation & MIMIC-IV-ED, Boston (adult visits, 2011--2019) & Triage & No \\
+    Lett et al.~\cite{lett2025intersectional} & Admission & MIMIC-IV-ED; Boston Children's Hospital ED & Triage (children's ED: first 60 minutes) & Race and ethnicity, gender \\
+    Liu et al.~\cite{liu2024faim} & Admission & MIMIC-IV-ED; Singapore General Hospital ED & One, early in the visit (triage score, vital signs, past records) & Race, sex \\
+    Licoppe et al.~\cite{licoppe2026assessing} & Admission & MIMIC-IV-ED, Boston (2011--2019) & Triage & Race \\
+    King et al.~\cite{king2022machine} & Admission, summed up for bed planning & University College London Hospitals ED & Twelve moments, from arrival to 12 hours & No \\
     \midrule
     \multicolumn{5}{@{}l}{\textit{Process mining and predictive process monitoring}} \\
-    Madau \& Semeraro~\cite{madau2025process} & Disposition (eight and five classes) & MIMICEL & End of the visit (data from the whole stay) & No \\
+    Madau \& Semeraro~\cite{madau2025process} & Disposition (eight and five classes) & MIMICEL v2.1.0 & End of the visit (data from the whole stay) & No \\
     Teinemaa et al.~\cite{teinemaa2019outcome} & Case outcome & Nine real-life event logs (24 tasks); three from hospitals: gynaecology and sepsis patients (Dutch hospitals; sepsis cases start in the emergency room), billing & Each prefix length, up to a log-specific limit (at most 40 events) & No \\
     Teinemaa et al.~\cite{teinemaa2018temporal} & Case outcome, stability of predictions & Six real-life event logs (12 tasks); two from hospitals: sepsis patients (Dutch hospital; cases start in the emergency room), billing & Each prefix length, up to a set limit & No \\
     \midrule
     \multicolumn{5}{@{}l}{\textit{Fairness of clinical prediction models}} \\
-    Röösli et al.~\cite{roosli2022peeking} & In-hospital mortality & MIMIC-III (ICU); Stanford hospital data & First 48 hours of the ICU stay & Gender, ethnicity, insurance \\
-    Wang et al.~\cite{wang2025evaluating} & Wait of 30 minutes or more from triage to an examination room & One US ED (triage level 3) & After triage & Sex, race and ethnicity, insurance \\
-    Pfohl et al.~\cite{pfohl2021empirical} & Mortality, long stay, readmission & Stanford hospital data, claims, MIMIC-III & Start of the hospital stay (MIMIC-III: 24 hours after admission) & Race and ethnicity, sex, age \\
-    Sánchez-Marqués et al.~\cite{sanchezmarques2026addressing} & Glioma grade & TCGA (839 patients) & Not time-based (one diagnosis per patient) & Race, gender \\
+    Röösli et al.~\cite{roosli2022peeking} & In-hospital mortality & ICU stays: MIMIC-III (Boston); Stanford Health Care & First 48 hours of the ICU stay & Gender, ethnicity, insurance \\
+    Wang et al.~\cite{wang2025evaluating} & Wait of 30 minutes or more from triage to an examination room & One urban US ED (adult visits, triage level 3) & After triage & Sex, race and ethnicity, insurance \\
+    Pfohl et al.~\cite{pfohl2021empirical} & Mortality, long stay, readmission & Stanford hospital records; Optum US insurance claims; MIMIC-III (ICU) & Start of the hospital stay (MIMIC-III: 24 hours after admission) & Race and ethnicity, sex, age \\
+    Sánchez-Marqués et al.~\cite{sanchezmarques2026addressing} & Glioma grade & TCGA brain tumour data & Not time-based (one diagnosis per patient) & Race, gender \\
     \bottomrule
   \end{tabularx}
 \end{table}
