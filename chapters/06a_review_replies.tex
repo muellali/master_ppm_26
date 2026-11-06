@@ -5,7 +5,25 @@
 \begin{enumerate}
   \item \textbf{Counterfactual check and real-time auditing} (pp.~6, 9, 10, 16). I will include it. A second XGBoost model with insurance as an input will be trained only for this check. For each visit, the insurance will be changed (for example from Medicaid to private or Medicare) and the predictions will be compared at both decision points. The results will be the share of changed predictions and, with a warning rule, the number of warnings per insurance group, decision point and day (weeks 6 and 12 of the agenda). The sensitivity analysis with different ways of filling in the insurance is planned as an optional extension. ``Not insured'' can hardly be studied: MIMIC has only four ``no charge'' visits.
 
-  \item \textbf{Choice of the decision points} (p.~10). I will justify the choice in the method section. MIMICEL has six activities. Triage is the first decision of the staff and is recorded for every visit. The first medicine dispensation marks the start of treatment. The other activities are not single decisions (repeated vital sign checks, reconciliation of the patient's own medicines) or come at the end (discharge). I will also check how sensitive the baseline results are to the choice of decision point (week 6). Options: fixed times after arrival, a number of events, or other versions of the second decision point. Which one would you prefer?
+  \item \textbf{Choice of the decision points} (p.~10). The question: a study on how sensitive the results are to the decision point, and a justification of the choice of the decision points.
+
+  \textit{What I can say already.} A decision point is a moment where staff act and that is visible as an activity in the event log. The prediction must come before the outcome is known (Teinemaa et al.). Choosing the prediction moment is described as an open problem in predictive process monitoring (Ceravolo et al.\ 2024), so I will justify the choice and test it.
+  \begin{itemize}
+    \item \textbf{Triage} is the first decision of the staff, is recorded for every visit and is the moment used by other admission studies on MIMIC-IV-ED (Xie, Lett, Licoppe). In MIMICEL its time is set to arrival plus one second.
+    \item \textbf{First medicine dispensation} marks the start of ED treatment. It is a staff action, ordered by a physician or given under an approved protocol, so not always a physician's decision. Early clinical actions and the response to first treatment carry information about admission (Barak-Corren et al.\ 2017; for asthma the US guideline EPR-3).
+    \item \textbf{Concerns.} MIMIC has no time for the admission decision, and admitted patients still receive medicines while they wait for a bed. Some first medicines will therefore come after the decision, too late for an early bed request. About 70\% of visits have a dispensation, fewer at low acuity (Wei et al., preprint), so the patients change between the two points. Studies that predict admission at several moments use fixed times after arrival instead (Barak-Corren et al.\ 2017; King et al.\ 2022).
+  \end{itemize}
+
+  \textit{What I will check in the data, and why} (counts and medians only, weeks 1--2):
+  \begin{enumerate}
+    \item Share of visits with a first medicine, per insurance group and acuity: who reaches the second decision point.
+    \item Time from arrival to the first medicine, and from the first medicine to leaving the ED, for admitted and other visits: how much time is left for a bed request.
+    \item For admitted visits, how often the first medicine comes after the hospital admission time: a rough upper bound for medicines given after the decision (the admission time is not the decision time).
+  \end{enumerate}
+  Depending on the results, the first medicine stays the second decision point, possibly with a time limit, or a fixed time after arrival becomes the main second point and the first medicine a sensitivity variant.
+
+  \textit{Sensitivity study} (baseline model): (a) the first medicine only within a time limit after arrival; (b) fixed times after arrival, e.g.\ 1, 2 and 4 hours; (c) all moments evaluated on the same visits, to separate the effect of the moment from the change in patients. Which of these would you prefer, and would a fixed time after arrival be acceptable as a decision point?
+  % Full texts still to obtain before citing in the thesis: Barak-Corren 2017, Ceravolo 2024, EPR-3, Liu 2009, Payne-Cardona 2021. See claude/second-decision-point-research.md.
 
   \item \textbf{Plain statistics or a process perspective?} (pp.~2, 11). The question, as I understand it: could a simple statistical analysis, such as the link between insurance (taken from the earlier stay) and hospital admission, already answer what the thesis wants to know? And if so, why are prediction models and a process view needed?
 
